@@ -1,0 +1,108 @@
+<html>
+    <title>Cumculator</title>
+    <body>
+        <h1>Cumculator</h1>
+        <div id="containervol-div" style="margin-top: 8px">
+            <label for="containervol">Volume of container: </label>
+            <input id="containervol" style="width: 69px" oninput="calc()">
+            <input id="galradio" type="radio" name="unit" onclick="calc()" checked>Gallons
+            <input id="ozradio" type="radio" name="unit" onclick="calc()">Ounces
+            <input id="literradio" type="radio" name="unit" onclick="calc()">Liters
+        </div>
+        <div id="semenvol-div" style="margin-top: 8px">
+            <label for="semenvol">Amount of semen per ejaculation (mL): </label>
+            <input id="semenvol" style="width: 69px" oninput="calc()">
+            <i>(Average is 1.5-5mL)</i>
+        </div>
+        <div id="ejacnum-div" style="margin-top: 8px">
+            <label for="ejacnum">Ejaculations per person per day: </label>
+            <input id="ejacnum" style="width: 69px" oninput="calc()">
+            <i>(I believe in you!)</i>
+        </div>
+        <div id="peoplenum-div" style="margin-top: 8px">
+            <label for="peoplenum">Number of ejaculators: </label>
+            <input id="peoplenum" style="width: 69px" oninput="calc()">
+            <i>(Is this a group effort?)</i>
+        </div>
+        <div id="total-div" style="margin-top: 23px; display: none">
+            It will take <b><span id="totalpeople"><span></span></b> people <b><span id="totalejac">0</span></b> ejaculations over <b><span id="totaldays"></span></b> <span id="timeunits">days</span> to fill the container with cum.
+            <br><br><i><span id="rando"></span></i>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+    function calc() {
+        var containervolbox = document.querySelector('#containervol');     
+        var semenvolbox = document.querySelector('#semenvol');
+        var ejacnumbox = document.querySelector('#ejacnum');
+        var peoplenumbox = document.querySelector('#peoplenum');
+        var galradio = document.querySelector('#galradio');
+        var literradio = document.querySelector('#literradio');
+        var totaldiv = document.querySelector('#total-div');
+
+        if (containervolbox.value && semenvolbox.value && ejacnumbox.value && peoplenumbox.value) {
+            var containervol = parseFloat(containervolbox.value);
+            var semenvol = parseFloat(semenvolbox.value);
+            var ejacnum = parseInt(ejacnumbox.value);
+            var peoplenum = parseInt(peoplenumbox.value);
+
+            totaldiv.style.display = "block";
+
+            if (galradio.checked) {
+                var mlconv = 3785.41;
+            } else if (ozradio.checked) {
+                var mlconv = 29.5735;
+            } else if (literradio.checked) {
+                var mlconv = 1000;
+            }
+            
+            var totalejac = Math.ceil(containervol * mlconv / semenvol);
+            var totaldays = totalejac / ejacnum / peoplenum;
+
+            document.querySelector('#totalpeople').innerHTML = peoplenum.toFixed(0);
+            document.querySelector('#totalejac').innerHTML = totalejac.toFixed(0);
+
+            if (totaldays >= 365) {
+                document.querySelector('#timeunits').innerHTML = "years";
+                var totalyears = totaldays / 365;
+                document.querySelector('#totaldays').innerHTML = totalyears.toFixed(2);
+            } else {
+                document.querySelector('#timeunits').innerHTML = "days";
+                document.querySelector('#totaldays').innerHTML = totaldays.toFixed(2);
+            }
+
+            var random = Math.floor(Math.random() * 8);
+            switch (random) {
+                case 0:
+                    var text = "Golly gosh! Remember to hydrate!";
+                    break;
+                case 1:
+                    var text = "It's a marathon, not a race!";
+                    break;
+                case 2:
+                    var text = "🎵 I'm a joker, I'm a smoker, I'm a midnight stroker 🎵";
+                    break;
+                case 3:
+                    var text = "You're doing God's work!";
+                    break;
+                case 4:
+                    var text = "Calculate 'n' ejaculate!";
+                    break;
+                case 5:
+                    var text = "Splatter spree!";
+                    break;
+                case 6:
+                    var text = "🎵 Just beat it, beat it, no one wants to be defeated 🎵";
+                    break;
+                case 7:
+                    var text = "Winter is cumming.";
+                    break;
+            }
+            document.querySelector('#rando').innerHTML = text;
+            
+        } else {
+            totaldiv.style.display = "none";
+        }
+    }
+</script>
