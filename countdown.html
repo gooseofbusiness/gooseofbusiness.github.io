@@ -22,6 +22,10 @@
     <div id="countdown"></div>
 
     <script>
+        function pluralize(value, singular, plural) {
+            return value === 1 ? `${value} ${singular}` : `${value} ${plural}`;
+        }
+
         function updateCountdown() {
             const eventDate = new Date("2025-04-04T09:35:00Z"); // UTC time for 10:35 AM London Time
             const now = new Date();
@@ -38,7 +42,13 @@
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerHTML = `${weeks} weeks, ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
+            document.getElementById("countdown").innerHTML = `
+                ${pluralize(weeks, "week", "weeks")}, 
+                ${pluralize(days, "day", "days")}, 
+                ${pluralize(hours, "hour", "hours")}, 
+                ${pluralize(minutes, "minute", "minutes")}, and 
+                ${pluralize(seconds, "second", "seconds")}
+            `;
         }
 
         updateCountdown();
